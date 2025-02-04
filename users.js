@@ -1,5 +1,12 @@
 const bcrypt = require('bcryptjs');
-let users = [];
+let users = [
+    {
+        "id": 1,
+        "username": "user1",
+        "password": "$2a$10$mQrb6v1L5PWQt1dS1BIef.n2gcZt79AQlRj64mXdtIWd3mGdgRkgO",
+        "email": "user1@example.com"
+    }
+];
 
 function getAllUsers() {
     return users;

@@ -1,4 +1,11 @@
-let products = [];
+let products = [
+    {
+        "id": 1,
+        "name": "Gelas",
+        "price": 10.000,
+        "photo_url": "https://image1ws.indotrading.com/s3/productimages/webp/co205354/p923533/w600-h600/5e50fba5-3882-4d5c-8ff0-a367df004d46.png"
+    },
+];
 
 function getAllProducts() {
     return products;
