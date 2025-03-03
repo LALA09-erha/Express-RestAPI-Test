@@ -1,9 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
+require("dotenv").config();
 const { products, getAllProducts, getProductById, createProduct, updateProduct, deleteProduct } = require('./products');
 const { users, getAllUsers, getUserById, createUser, updateUser, deleteUser } = require('./users');
-
+const transporter = require('./email');
 const app = express();
 app.use(bodyParser.json());
 
@@ -80,6 +81,37 @@ app.delete('/users/:id', (req, res) => {
     if (!isDeleted) return res.status(404).json({ error: 'User not found' });
     res.status(204).send();
 });
+
+// send email
+app.post('/send-email', async (req, res) => {
+    const { email, subject, message, name } = req.body;
+    try {
+        await transporter.sendMail({
+            from: `"Portfolio Mailer" <${process.env.EMAIL_USER}>`,
+            to: "lalangxixi@gmail.com",
+            subject: subject,
+            html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background-color: #f9f9f9;">
+              <h2 style="color: #333; text-align: center;">📩 New Message from Portfolio</h2>
+              <hr style="border: none; height: 1px; background-color: #ddd;">
+              <p style="font-size: 16px; color: #555;"><strong>Name:</strong> ${name}</p>
+              <p style="font-size: 16px; color: #555;"><strong>Message:</strong> ${message}</p>
+              <p style="font-size: 16px; color: #555;"><strong>From:</strong> <a href="mailto:${email}" style="color: #007bff; text-decoration: none;">${email}</a></p>
+              <hr style="border: none; height: 1px; background-color: #ddd;">
+              <p style="font-size: 14px; text-align: center; color: #777;">
+                Best Regards, <br> 
+                <strong style="color: #333;">Portfolio Mailer</strong>
+              </p>
+            </div>
+          `,
+            replyTo: email
+        });
+        res.status(200).json({ message: 'Email sent' });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to send email' });
+    }
+}
+);
 
 app.get('/', (req, res) => {
     res.send('full code : https://github.com/LALA09-erha/Express-RestAPI-Test');
