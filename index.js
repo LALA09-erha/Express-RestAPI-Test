@@ -6,6 +6,7 @@ require("dotenv").config();
 const { products, getAllProducts, getProductById, createProduct, updateProduct, deleteProduct } = require('./src/products');
 const { users, getAllUsers, getUserById, createUser, updateUser, deleteUser } = require('./src/users');
 const transporter = require('./src/email');
+const crawlData = require('./src/crawlData'); // Pastikan Anda memiliki modul ini untuk crawling data
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
@@ -120,8 +121,19 @@ app.get('/', (req, res) => {
     res.send('full code : https://github.com/LALA09-erha/Express-RestAPI-Test');
 });
 
+// api untuk crawling data pertandingan bola
+app.get('/api/match', async (req, res) => {
+    try {
+        const data = await crawlData();
+        res.status(200).json(data);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to crawl data' });
+    }
+});
+
 // Menjalankan server
 const PORT = process.env.PORT || 5252;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on port http://localhost:${PORT}`);
 });
