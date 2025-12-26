@@ -135,9 +135,16 @@ app.get('/api/match', async (req, res) => {
 app.get('/api/posts', async (req, res) => {
     try {
         var url = process.env.API_URL || 'https://bloggo.page.gd';
-        const response = await fetch(`${url}/api/posts`);
-        const data = await response.json();
-        res.status(200).json(data);
+        var dataYangAkanDikirim = { title: "foo", body: "bar", userId: 1 };
+        const response = await fetch(`${url}/api/posts`, {
+            method: 'get',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(dataYangAkanDikirim) // data yang akan dikirim ke server
+        });
+        console.log('Response status:', JSON.stringify(response)); // Log status response
+        res.status(200).json(await response.json());
     } catch (error) {
         console.error('Error fetching posts:', error);
         res.status(500).json({ error: 'Failed to fetch posts' });
