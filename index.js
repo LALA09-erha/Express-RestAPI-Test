@@ -131,7 +131,18 @@ app.get('/api/match', async (req, res) => {
         res.status(500).json({ error: 'Failed to crawl data' });
     }
 });
-
+// app. untuk manggil data dari api lain     const url = `${process.env.API_URL}/api/posts`
+app.get('/api/posts', async (req, res) => {
+    try {
+        var url = process.env.API_URL || 'https://bloggo.page.gd';
+        const response = await fetch(`${url}/api/posts`);
+        const data = await response.json();
+        res.status(200).json(data);
+    } catch (error) {
+        console.error('Error fetching posts:', error);
+        res.status(500).json({ error: 'Failed to fetch posts' });
+    }
+});
 // Menjalankan server
 const PORT = process.env.PORT || 5252;
 app.listen(PORT, () => {
