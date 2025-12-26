@@ -136,13 +136,11 @@ app.get('/api/posts', async (req, res) => {
     try {
         var url = process.env.API_URL || 'https://bloggo.page.gd';
         var dataYangAkanDikirim = { title: "foo", body: "bar", userId: 1 };
-        const response = await fetch(`${url}/api/posts`, {
-            method: 'get',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(dataYangAkanDikirim) // data yang akan dikirim ke server
-        });
+        const url = process.env.API_URL || 'https://bloggo.page.gd';
+
+        // Method GET - tanpa body, pakai query params jika perlu
+        const response = await fetch(`${url}/api/posts`);
+
         console.log('Response status:', JSON.stringify(response)); // Log status response
         res.status(200).json(await response.json());
     } catch (error) {
