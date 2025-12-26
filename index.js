@@ -134,7 +134,6 @@ app.get('/api/match', async (req, res) => {
 // app. untuk manggil data dari api lain     const url = `${process.env.API_URL}/api/posts`
 app.get('/api/posts', async (req, res) => {
     try {
-        var url = process.env.API_URL || 'https://bloggo.page.gd';
         var dataYangAkanDikirim = { title: "foo", body: "bar", userId: 1 };
         const url = process.env.API_URL || 'https://bloggo.page.gd';
 
